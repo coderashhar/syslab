@@ -1,4 +1,5 @@
 import { consumeToken, createTokenBucket, refillTokenBucket } from "../algorithms/tokenBucket";
+import { getTrafficRate } from "../traffic/trafficPatterns";
 
 export function createSimulation(config = {}) {
   return {
@@ -12,7 +13,7 @@ export function createSimulation(config = {}) {
   };
 }
 
-export function advanceSimulation(simulation, { elapsed = 0.5, arrivals, arrivalRate } = {}) {
+export function advanceSimulation(simulation, { elapsed = 0.5, arrivals, arrivalRate, trafficPattern = "constant", trafficConfig = {} } = {}) {
   const nextTime = Number((simulation.virtualTime + Math.max(0, elapsed)).toFixed(3));
   let bucket = refillTokenBucket(simulation.bucket, nextTime);
   const refillEvent = elapsed > 0 && bucket.tokens !== simulation.bucket.tokens ? {
@@ -28,7 +29,8 @@ export function advanceSimulation(simulation, { elapsed = 0.5, arrivals, arrival
   let sequence = simulation.requestSequence;
   let accepted = simulation.metrics.accepted;
   let rejected = simulation.metrics.rejected;
-  const requested = arrivalRate == null ? Number(arrivals ?? 1) : simulation.trafficRemainder + (Math.max(0, arrivalRate) * Math.max(0, elapsed));
+  const effectiveRate = arrivalRate == null ? getTrafficRate(trafficPattern, nextTime, trafficConfig) : arrivalRate;
+  const requested = arrivals == null ? simulation.trafficRemainder + (Math.max(0, effectiveRate) * Math.max(0, elapsed)) : Number(arrivals);
   const count = Math.max(0, Math.floor(requested));
   for (let i = 0; i < count; i += 1) {
     sequence += 1;
@@ -42,7 +44,7 @@ export function advanceSimulation(simulation, { elapsed = 0.5, arrivals, arrival
     status: simulation.status === "running" ? "running" : "paused",
     virtualTime: nextTime,
     requestSequence: sequence,
-    trafficRemainder: arrivalRate == null ? simulation.trafficRemainder : requested - count,
+    trafficRemainder: arrivals == null ? requested - count : simulation.trafficRemainder,
     bucket,
     events: [...simulation.events, ...newEvents].slice(-80),
     metrics: { total: simulation.metrics.total + count, accepted, rejected },

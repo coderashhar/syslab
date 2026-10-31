@@ -8,7 +8,7 @@ function reducer(state, action) {
     case "RUN": return { ...state, status: "running" };
     case "PAUSE": return { ...state, status: "paused" };
     case "RESET": return resetSimulation(action.config);
-    case "STEP": return advanceSimulation(state, action.options);
+    case "STEP": return advanceSimulation(state, { ...action.options, trafficPattern: action.config.trafficPattern, trafficConfig: action.config });
     case "BURST": return advanceSimulation(state, { elapsed: 0.1, arrivals: action.count });
     default: return state;
   }
@@ -16,7 +16,7 @@ function reducer(state, action) {
 
 export function useSimulation(config) {
   const [state, dispatch] = useReducer(reducer, config, createSimulation);
-  const step = useCallback((options) => dispatch({ type: "STEP", options }), []);
+  const step = useCallback((options = {}) => dispatch({ type: "STEP", options, config }), [config]);
   const reset = useCallback(() => dispatch({ type: "RESET", config }), [config]);
   const run = useCallback(() => dispatch({ type: "RUN" }), []);
   const pause = useCallback(() => dispatch({ type: "PAUSE" }), []);
@@ -24,11 +24,11 @@ export function useSimulation(config) {
 
   useEffect(() => {
     dispatch({ type: "RESET", config });
-  }, [config.capacity, config.refillRate, config.initialTokens, config.requestRate]);
+  }, [config.capacity, config.refillRate, config.initialTokens, config.requestRate, config.trafficPattern, config.customRequestRate, config.customActiveDuration, config.customRestDuration, config.randomSeed]);
 
   useEffect(() => {
     if (state.status !== "running") return undefined;
-    const timer = window.setInterval(() => step({ elapsed: 0.5, arrivalRate: config.requestRate }), 650);
+    const timer = window.setInterval(() => step({ elapsed: 0.5 }), 650);
     return () => window.clearInterval(timer);
   }, [state.status, step, config.requestRate]);
 
