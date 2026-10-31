@@ -32,4 +32,8 @@ describe("token bucket", () => {
     const next = advanceSimulation(running, { elapsed: 0.5, arrivalRate: 2 });
     expect(next.status).toBe("running");
   });
+  it("advances the teaching step by exactly one virtual second", () => {
+    const next = advanceSimulation(createSimulation({ requestRate: 2 }), { elapsed: 1, trafficPattern: "constant", trafficConfig: { requestRate: 2 } });
+    expect(next.virtualTime).toBe(1);
+  });
 });
