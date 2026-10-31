@@ -39,7 +39,7 @@ export function advanceSimulation(simulation, { elapsed = 0.5, arrivals, arrival
   }
   return {
     ...simulation,
-    status: "paused",
+    status: simulation.status === "running" ? "running" : "paused",
     virtualTime: nextTime,
     requestSequence: sequence,
     trafficRemainder: arrivalRate == null ? simulation.trafficRemainder : requested - count,

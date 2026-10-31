@@ -27,4 +27,9 @@ describe("token bucket", () => {
     expect(run().events.map((event) => event.type)).toEqual(run().events.map((event) => event.type));
     expect(run().metrics).toEqual({ total: 4, accepted: 2, rejected: 2 });
   });
+  it("keeps automatic playback running across ticks", () => {
+    const running = { ...createSimulation({ capacity: 3, refillRate: 1 }), status: "running" };
+    const next = advanceSimulation(running, { elapsed: 0.5, arrivalRate: 2 });
+    expect(next.status).toBe("running");
+  });
 });
