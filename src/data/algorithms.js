@@ -1,6 +1,6 @@
 export const algorithms = [
   { id: "token-bucket", name: "Token Bucket", shortName: "Token bucket", color: "#a78bfa", status: "Available", summary: "Absorb controlled bursts while enforcing a long-term request rate.", complexity: "O(1) state", memory: "O(1)" },
-  { id: "leaky-bucket", name: "Leaky Bucket", shortName: "Leaky bucket", color: "#60a5fa", status: "Coming soon", summary: "Smooth traffic by draining a queue at a fixed processing rate.", complexity: "O(1) state", memory: "O(n)" },
+  { id: "leaky-bucket", name: "Leaky Bucket", shortName: "Leaky bucket", color: "#60a5fa", status: "Available", summary: "Smooth traffic by draining a queue at a fixed processing rate.", complexity: "O(1) state", memory: "O(n)" },
   { id: "fixed-window", name: "Fixed Window", shortName: "Fixed window", color: "#fbbf24", status: "Coming soon", summary: "Count requests in discrete windows and reset at each boundary.", complexity: "O(1) state", memory: "O(1)" },
   { id: "sliding-log", name: "Sliding Window Log", shortName: "Sliding log", color: "#fb7185", status: "Coming soon", summary: "Keep exact timestamps inside a rolling request window.", complexity: "O(log n)", memory: "O(n)" },
   { id: "sliding-counter", name: "Sliding Window Counter", shortName: "Sliding counter", color: "#4ade80", status: "Coming soon", summary: "Estimate a rolling count by weighting the previous window.", complexity: "O(1) state", memory: "O(1)" },

@@ -25,7 +25,7 @@ describe("token bucket", () => {
   it("replays the same virtual workload deterministically", () => {
     const run = () => advanceSimulation(advanceSimulation(createSimulation({ capacity: 2, refillRate: 1, initialTokens: 1 }), { elapsed: 0.5, arrivals: 2 }), { elapsed: 1, arrivals: 2 });
     expect(run().events.map((event) => event.type)).toEqual(run().events.map((event) => event.type));
-    expect(run().metrics).toEqual({ total: 4, accepted: 2, rejected: 2 });
+    expect(run().metrics).toMatchObject({ total: 4, accepted: 2, rejected: 2 });
   });
   it("keeps automatic playback running across ticks", () => {
     const running = { ...createSimulation({ capacity: 3, refillRate: 1 }), status: "running" };

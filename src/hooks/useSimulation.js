@@ -24,7 +24,7 @@ export function useSimulation(config) {
 
   useEffect(() => {
     dispatch({ type: "RESET", config });
-  }, [config.capacity, config.refillRate, config.initialTokens, config.requestRate, config.trafficPattern, config.customRequestRate, config.customActiveDuration, config.customRestDuration, config.randomSeed]);
+  }, [config.algorithm, config.capacity, config.refillRate, config.initialTokens, config.queueCapacity, config.processingRate, config.initialQueue, config.requestRate, config.trafficPattern, config.customRequestRate, config.customActiveDuration, config.customRestDuration, config.randomSeed]);
 
   useEffect(() => {
     if (state.status !== "running") return undefined;
@@ -32,6 +32,6 @@ export function useSimulation(config) {
     return () => window.clearInterval(timer);
   }, [state.status, step, config.requestRate]);
 
-  const derived = useMemo(() => ({ acceptanceRate: state.metrics.total ? (state.metrics.accepted / state.metrics.total) * 100 : 0, fillPercent: (state.bucket.tokens / state.bucket.capacity) * 100 }), [state]);
+  const derived = useMemo(() => ({ acceptanceRate: state.metrics.total ? (state.metrics.accepted / state.metrics.total) * 100 : 0, fillPercent: state.algorithm === "leaky-bucket" ? (state.bucket.queue.length / state.bucket.capacity) * 100 : (state.bucket.tokens / state.bucket.capacity) * 100 }), [state]);
   return { state, derived, step, reset, run, pause, burst };
 }
