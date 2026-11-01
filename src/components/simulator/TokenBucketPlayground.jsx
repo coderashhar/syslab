@@ -23,7 +23,7 @@ export default function TokenBucketPlayground({ compact = false, initialAlgorith
     return next;
   });
   const updatePattern = (event) => setConfig((current) => ({ ...current, trafficPattern: event.target.value }));
-  const events = useMemo(() => [...state.events].reverse().slice(0, 7), [state.events]);
+  const events = useMemo(() => [...state.events].reverse(), [state.events]);
   const eventLabel = (event) => {
     const request = event.requestId?.replace("req-", "#");
     const action = { REQUEST_ACCEPTED: "accepted", REQUEST_REJECTED: "rejected", REQUEST_QUEUED: "queued", REQUEST_PROCESSED: "processed", QUEUE_OVERFLOW: "overflowed" }[event.type];
