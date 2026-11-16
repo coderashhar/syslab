@@ -41,7 +41,7 @@ export default function AppShell({ children }) {
       </aside>
       <main className="main-canvas">
         <header className="topbar">
-          <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#9895a8", fontSize: 12 }}><button type="button" className="icon-btn" aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"} aria-expanded={sidebarOpen} aria-controls="primary-sidebar" title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"} onClick={() => setSidebarOpen((open) => !open)}><Menu size={16} /></button><span>Rate limiting module</span><span style={{ color: "#464354" }}>/</span><span style={{ color: "#dbd7ea" }}>{pathname === "/" ? "Overview" : pathname.split("/").filter(Boolean).slice(-1)[0]?.replaceAll("-", " ") || "SysLab"}</span></div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#9895a8", fontSize: 12 }}><button type="button" className="icon-btn" aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"} aria-expanded={sidebarOpen} aria-controls="primary-sidebar" title={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"} onClick={() => setSidebarOpen((open) => !open)}><Menu size={16} /></button><span>{pathname.startsWith("/learn/back-of-envelope") ? "Back-of-envelope module" : "Rate limiting module"}</span><span style={{ color: "#464354" }}>/</span><span style={{ color: "#dbd7ea" }}>{pathname === "/" ? "Overview" : pathname.split("/").filter(Boolean).slice(-1)[0]?.replaceAll("-", " ") || "SysLab"}</span></div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}><span className="status-dot status-info" /><span className="muted" style={{ fontSize: 12 }}>Client-side sandbox</span></div>
         </header>
         {children}
