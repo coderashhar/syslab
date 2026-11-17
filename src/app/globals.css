@@ -96,6 +96,10 @@ button { cursor: pointer; }
 .playground-grid + .surface::-webkit-scrollbar { width: 8px; }
 .playground-grid + .surface::-webkit-scrollbar-track { background: #15151e; }
 .playground-grid + .surface::-webkit-scrollbar-thumb { background: #4b3e7f; border-radius: 999px; }
+.lesson-completion { display: flex; justify-content: flex-end; border-top: 1px solid #292938; margin-top: 32px; padding-top: 18px; }
+.lesson-completion-button { display: inline-flex; align-items: center; gap: 7px; border: 1px solid #3c754b; border-radius: 9px; padding: 10px 14px; background: #17261d; color: #a9efba; font-size: 12px; font-weight: 700; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+.lesson-completion-button:hover:not(:disabled) { background: #1d3425; border-color: #4d9962; transform: translateY(-1px); }
+.lesson-completion-button.completed { cursor: default; opacity: .82; }
 
 .boe-page-head { max-width: 720px; }
 .boe-page-head h1 { font-size: clamp(40px, 6vw, 62px); line-height: 1; letter-spacing: -.065em; margin: 14px 0 18px; }
